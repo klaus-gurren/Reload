@@ -1,11 +1,12 @@
 /*
-	Написав два простеньких приклада із використанням Pvarів та глобальним масивом, найкращий варік це п-вари так як вони не споживають пам'ять та видаляються на відміну від глобального масива.
-		Також, варто би зробити кд доступною команду раз в 3-5 хв, щоб гравці не зловживали.
+	Написав два простеньких приклада із використанням Pvarів та глобальним масивом
+		Найкращий варік це п-вари так як вони не споживають пам'ять та видаляються на відміну від глобального масива.
 */
 
 
 CMD:reload(playerid)
 {
+	if(GetPVarInt(playerid, "KdReload") > gettime()) return SendClientMessage(playerid, -1, "Помилка! Доступно раз в 3 хвилини!"); //Думаю тут зрозуміло, перевірка для того щоб не зловживали командою
 	if(IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, -1, "Неможливо використати в автомобілі!"); //можна обійтися і без цієї перевірки т/к перевірка стану нижче не пропустить.
 	if(GetPlayerState(playerid) != PLAYER_STATE_ONFOOT) return SendClientMessage(playerid, -1, "Помилка! Спробуйте пізніше."); //Якщо гравець не іде пішки(тобто в інши станах, авто, спостереження, смерті і т/д, перевірка щоб запобігти багоюзу).
 	
@@ -39,16 +40,18 @@ public reload_timer(playerid) //створюємо сам паблік
     SetPlayerVirtualWorld(playerid, 0); //встановлюємо 0 віртуальний світ playerid
     TogglePlayerControllable(playerid, true); //знімаємо фріз екрана
     
+    SetPVarInt(playerid, "KdReload", gettime() + 180); //Створюємо пвар, присвоюємо йому "gettime" 180 секунд - 3 хв.
     DeletePVar(playerid, "ReloadX"), DeletePVar(playerid, "ReloadY"), DeletePVar(playerid, "ReloadZ"), DeletePVar(playerid, "ReloadA"); //видаляємо пвари
     return 1;
 }
 
 
-/*========================Приклад 2========================*/
+//========================Приклад 2========================\\
 new Float:ReloadFloat[MAX_PLAYERS][4]; //створюємо масив для зберігання поточних координатів гравця.
 
 CMD:reload(playerid) //сама команда, для прикладу /reload
 {
+	if(GetPVarInt(playerid, "KdReload") > gettime()) return SendClientMessage(playerid, -1, "Помилка! Доступно раз в 3 хвилини!");
 	if(IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, -1, "Неможливо використати в автомобілі!");
 	if(GetPlayerState(playerid) != PLAYER_STATE_ONFOOT) return SendClientMessage(playerid, -1, "Помилка! Спробуйте пізніше.");
 	
@@ -78,6 +81,6 @@ public reload_timer(playerid) //створюємо сам паблік
     SetPlayerFacingAngle(playerid, ReloadFloat[playerid][3]); //встановлюємо кут поворота
     SetPlayerVirtualWorld(playerid, 0); //встановлюємо стандарт віртуальний світ playerid
     TogglePlayerControllable(playerid, true); //розблоковуємо екран
-    
+    SetPVarInt(playerid, "KdReload", gettime() + 180); //Створюємо пвар, присвоюємо йому "gettime" 180 секунд - 3 хв.
     return 1;
 }
