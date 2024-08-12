@@ -17,7 +17,7 @@
   <summary align="center">ENGLISH</summary>
 
   <h2 align="center">
-    Information after character death
+    Texture reset/stream zone update
   </h2>
 
   <p align="center">
@@ -32,7 +32,7 @@
   <summary align="center">УКРАЇНСЬКА</summary>
 
   <h2 align="center">
-    Інформація після смерті персонажа
+    Перезагнузка текстур/оновлення зони стріма
   </h2>
 
   <p align="center">
